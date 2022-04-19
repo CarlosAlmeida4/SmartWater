@@ -5,6 +5,7 @@
 static sensorPhotoRes_c PhotoRes;
 static sensorSoilMoist_c SoilMoist;
 static sensorTemHum_c TemHum;
+static sensorWtrFlow_c WtrFlow;
 
 void SensorsInit(void)
 {
@@ -20,6 +21,11 @@ void SensorsInit(void)
     {
         debugPrint(SENSORS_DEBUG,"Failed to init DHT11 sensor");
     }
+    if(WtrFlow.init(5)!=true)
+    {
+        debugPrint(SENSORS_DEBUG,"Failed to init WaterFlow sensor");
+    }
+
 }
 
 void Sens2s(void)
@@ -35,7 +41,7 @@ void Sens1s(void)
 
 void Sens100ms(void)
 {
-
+    WtrFlow.cyclic();
 }
 
 void Sens10ms(void)

@@ -5,6 +5,7 @@
 #include "PhotoRes\PhotoRes.hpp"
 #include "SoilMoist\SoilMoist.hpp"
 #include "TemHum\TemHum.hpp"
+#include "WtrFlow\WtrFlow.hpp"
 
 
 #define SENSORS_DEBUG 1
