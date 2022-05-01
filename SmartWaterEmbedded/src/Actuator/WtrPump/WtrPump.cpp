@@ -3,22 +3,40 @@
 
 void ActuatorWtrPump_c::cyclic()
 {
-    switch (PumpStatusRequest)
+    switch (PumpStatus)
     {
     case OPENING:
-        Open();       
-        break;
-    case CLOSING:
-        Close();
-        break;
-    case OPEN:
+        PumpStatus = OPEN;
         Stop();
         break;
-    case CLOSED:
+    case CLOSING:
+        PumpStatus = CLOSED;
         Stop();
         break;
     }
-    PumpStatus = PumpStatusRequest;
+    switch (PumpStatusRequest)
+    {
+    case OPENING:
+        if(PumpStatus!=OPEN)
+        {
+            Open();
+            PumpStatus = OPENING;
+        }
+        PumpStatusRequest = INVALID;       
+        break;
+    case CLOSING:
+        if(PumpStatus!=CLOSED)
+        {
+            Close();
+            PumpStatus = CLOSING;
+        }
+        PumpStatusRequest = INVALID;      
+        break;
+    case INVALID:
+        break;
+    }
+
+    
     //#ifdef DEBUG_ENABLED
     //#ifdef ACTUATOR_DEBUG
     Serial.print("------Current pump state: ");

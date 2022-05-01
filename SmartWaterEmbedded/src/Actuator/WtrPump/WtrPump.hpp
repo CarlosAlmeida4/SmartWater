@@ -10,7 +10,8 @@ typedef enum
     OPENING,
     CLOSING,
     OPEN,
-    CLOSED
+    CLOSED,
+    INVALID
 }PumpStatus_e;
 
 class ActuatorWtrPump_c
