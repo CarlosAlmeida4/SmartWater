@@ -23,9 +23,9 @@ void Actu1s(void)
         Serial.print("Received char: ");
         Serial.println(recv);
         Serial.print("PumpStatusRequest: ");
-        #endif 
-        #endif 
         Serial.println(ActuatorWtrPump.PumpStatusRequest);
+        #endif 
+        #endif 
         ActuatorWtrPump.PumpStatusRequest = (PumpStatus_e)(recv - (char)'0');
     }    
     ActuatorWtrPump.cyclic();

@@ -36,7 +36,7 @@ void ActuatorWtrPump_c::cyclic()
         break;
     }
 
-    
+
     #ifdef DEBUG_ENABLED
     #ifdef WTRPUMP_DEBUG
     Serial.print("------Current pump state: ");
