@@ -18,11 +18,15 @@ void Actu1s(void)
     {
         char recv; 
         Serial.readBytes(&recv,1);
+        #ifdef DEBUG_ENABLED
+        #ifdef ACTUATOR_DEBUG
         Serial.print("Received char: ");
         Serial.println(recv);
-        ActuatorWtrPump.PumpStatusRequest = (PumpStatus_e)(recv - (char)'0');
         Serial.print("PumpStatusRequest: ");
+        #endif 
+        #endif 
         Serial.println(ActuatorWtrPump.PumpStatusRequest);
+        ActuatorWtrPump.PumpStatusRequest = (PumpStatus_e)(recv - (char)'0');
     }    
     ActuatorWtrPump.cyclic();
 }
