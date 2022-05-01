@@ -3,7 +3,7 @@
 
 #include "Arduino.h"
 
-#define DEBUG_ENABLED
+//#define DEBUG_ENABLED
 
 #ifndef SCHM_DEBUG
 #define SCHM_DEBUG 0

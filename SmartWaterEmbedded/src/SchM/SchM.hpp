@@ -2,6 +2,7 @@
 #define SCHM_HPP
 
 #include "Sens\Sens.hpp"
+#include "Actuator\Actu.hpp"
 
 #define _TASK_SLEEP_ON_IDLE_RUN
 #define SCHM_DEBUG 0

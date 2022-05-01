@@ -17,15 +17,18 @@ Task t3(TASK2000MS_Period, TASK_FOREVER, &Task2000MS, &runner, true);  //adding 
 void Task2000MS()
 {
     Sens2s();
+    Actu2s();
 }
 
-void Task100MS() {
+void Task100MS() { 
     Sens100ms();
+    Actu100ms();
     //debugPrint(SCHM_DEBUG,"100MS task");
 }
 
 void Task1000MS(){
     Sens1s();
+    Actu1s();
     //debugPrint(SCHM_DEBUG,"1000MS task");
 }
 
@@ -36,8 +39,7 @@ void SchM_Init(void)
 
     /* Init sensors */
     SensorsInit();
-    //CommunicationInit();
-
+    ActuatorsInit();
     runner.startNow();
 }
 void SchM_Main(void)
