@@ -1,7 +1,7 @@
 #ifndef WTRPUMP_HPP
 #define WTRPUMP_HPP
 
-#define WTRPUMP_DEBUG 7
+//#define WTRPUMP_DEBUG 7
 
 #include "Arduino.h"
 

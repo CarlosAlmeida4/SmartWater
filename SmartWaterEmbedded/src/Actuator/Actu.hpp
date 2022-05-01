@@ -1,7 +1,7 @@
 #ifndef ACTU_HPP
 #define ACTU_HPP
 
-#define ACTUATOR_DEBUG 6
+//#define ACTUATOR_DEBUG 6
 
 #include "WtrPump/WtrPump.hpp"
 
