@@ -18,6 +18,7 @@ void Task2000MS()
 {
     Sens2s();
     Actu2s();
+    Communication2s();
 }
 
 void Task100MS() { 
@@ -40,6 +41,7 @@ void SchM_Init(void)
     /* Init sensors */
     SensorsInit();
     ActuatorsInit();
+    CommunicationInit();
     runner.startNow();
 }
 void SchM_Main(void)
