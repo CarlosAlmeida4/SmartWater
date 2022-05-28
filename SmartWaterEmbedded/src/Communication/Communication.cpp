@@ -1,7 +1,6 @@
 #include "Communication.hpp"
 #include "DebugFunction.hpp"
 
-static FirebaseWifi_c FirebaseWifi;
 
 void CommunicationInit()
 {
