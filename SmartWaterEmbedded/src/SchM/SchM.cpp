@@ -46,5 +46,6 @@ void SchM_Init(void)
 }
 void SchM_Main(void)
 {
+    //Communication2s();
     runner.execute();
 }

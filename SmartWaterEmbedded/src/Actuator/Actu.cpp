@@ -3,6 +3,8 @@
 
 static ActuatorWtrPump_c ActuatorWtrPump; 
 
+//#define SERIAL_COMMAND
+
 void ActuatorsInit(void)
 {
     ActuatorWtrPump.init(4,7,3);
@@ -16,6 +18,7 @@ void Actu1s(void)
 {
     if(Serial.available())
     {
+        #ifdef SERIAL_COMMAND
         char recv; 
         Serial.readBytes(&recv,1);
         #ifdef DEBUG_ENABLED
@@ -27,6 +30,7 @@ void Actu1s(void)
         #endif 
         #endif 
         ActuatorWtrPump.PumpStatusRequest = (PumpStatus_e)(recv - (char)'0');
+        #endif
     }    
     ActuatorWtrPump.cyclic();
 }
@@ -41,4 +45,12 @@ void Actu10ms(void)
 void Actu1ms(void)
 {
 
+}
+void ActuSetValveOpen(void)
+{
+    ActuatorWtrPump.PumpStatusRequest = OPENING;
+}
+void ActuSetValveClosed(void)
+{
+    ActuatorWtrPump.PumpStatusRequest = CLOSING;
 }

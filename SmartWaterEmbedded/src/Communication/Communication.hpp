@@ -10,5 +10,4 @@ void CommunicationInit();
 void Communication2s();
 
 
-
 #endif 
