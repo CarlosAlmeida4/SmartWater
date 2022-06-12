@@ -1,7 +1,7 @@
 #ifndef WIFIAPI_HPP
 #define WIFIAPI_HPP
 
-#define WIFIAPI_DEBUG 9
+//#define WIFIAPI_DEBUG 9
 
 #include "Arduino.h"
 #include "Interface/Interface.hpp"

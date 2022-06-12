@@ -51,3 +51,23 @@ void Sens10ms(void)
 void Sens1ms(void)
 {
 }
+
+SensorPhotoRes_e SensGetLightLevel(void)
+{
+    return PhotoRes.ActualLightLevel;
+}
+
+SimpleSoilStatus_e SensGetSimpleSoilStatus(void)
+{
+    return SoilMoist.getSimpleSoilStatus();
+}
+
+float SensGetAmbientHumidity(void)
+{
+    return TemHum.getHumidity();
+}
+
+float SensGetAmbientTemperature(void)
+{
+    return TemHum.getTemperature();
+}

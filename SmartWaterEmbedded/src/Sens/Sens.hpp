@@ -16,5 +16,9 @@ void Sens1s(void);
 void Sens100ms(void);
 void Sens10ms(void);
 void Sens1ms(void);
+SensorPhotoRes_e SensGetLightLevel(void);
+SimpleSoilStatus_e SensGetSimpleSoilStatus(void);
+float SensGetAmbientHumidity(void);
+float SensGetAmbientTemperature(void);
 
 #endif
