@@ -8,7 +8,7 @@
 #include <WiFi101.h>
 #include <SPI.h>
 
-#define SSID_NAME "WaterPumpController"
+#include "secrets.h"
 
 class WifiAPI_c
 {
@@ -20,8 +20,9 @@ class WifiAPI_c
         void WifiAPIInit();
         void cyclic2s();
     private: /*Methods*/
+        void ChooseNetworks(int8_t *);
 #ifdef WIFIAPI_DEBUG
-         void printWiFiStatus();
+        void printWiFiStatus();
 #endif
 };
 

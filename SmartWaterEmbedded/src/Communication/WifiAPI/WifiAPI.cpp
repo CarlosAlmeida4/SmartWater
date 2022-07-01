@@ -1,11 +1,13 @@
 #include "WifiAPI.hpp"
 #include "DebugFunction.hpp"
 
+
+
 WiFiServer server(80);
 
 void WifiAPI_c::WifiAPIInit()
 {
-    status = WiFi.beginAP(SSID_NAME);
+    status = WiFi.beginAP(SSID_STANDALONE);
     if (status != WL_AP_LISTENING)
     {
         // don't continue
@@ -124,7 +126,34 @@ void WifiAPI_c::cyclic2s()
     }
 }
 
+void WifiAPI_c::ChooseNetworks(int8_t * ExistingSSID)
+{
+    
+    // scan for nearby networks:
+    Serial.println("** Scan Networks **");
+    int8_t numSsid = WiFi.scanNetworks();
+    if (numSsid == -1)
+    {
+      Serial.println("Couldn't get a wifi connection");
+    }
 
+    // print the list of networks seen:
+    Serial.print("number of available networks:");
+    Serial.println(numSsid);
+
+    // print the network number and name for each network found:
+    for (int thisNet = 0; thisNet < numSsid; thisNet++) {
+      Serial.print(thisNet);
+      Serial.print(") ");
+      Serial.print(WiFi.SSID(thisNet));
+      Serial.print("\tSignal: ");
+      Serial.print(WiFi.RSSI(thisNet));
+      Serial.print(" dBm");
+      Serial.print("\tEncryption: ");
+      Serial.flush();
+    }
+    *ExistingSSID = numSsid;
+}
 
 #ifdef WIFIAPI_DEBUG
 void WifiAPI_c::printWiFiStatus()
