@@ -1,7 +1,7 @@
 #ifndef TEMHUM_HPP
 #define TEMHUM_HPP
 
-#define TEMHUM_DEBUG 4
+//#define TEMHUM_DEBUG 4
 
 #include "Arduino.h"
 #include "dht11\dht11.h"

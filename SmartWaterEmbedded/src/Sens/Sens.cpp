@@ -11,19 +11,27 @@ void SensorsInit(void)
 {
     if(PhotoRes.init(A6)!=true)
     {
+        #ifdef SENSORS_DEBUG
         debugPrint(SENSORS_DEBUG,"Failed to init Photoresistor");
+        #endif
     }
     if(SoilMoist.init(A5)!=true)
     {
+        #ifdef SENSORS_DEBUG
         debugPrint(SENSORS_DEBUG,"Failed to init Soil moisture sensor");
+        #endif
     }
     if(TemHum.init(2)!=true)
     {
+        #ifdef SENSORS_DEBUG
         debugPrint(SENSORS_DEBUG,"Failed to init DHT11 sensor");
+        #endif
     }
     if(WtrFlow.init(5)!=true)
     {
+        #ifdef SENSORS_DEBUG
         debugPrint(SENSORS_DEBUG,"Failed to init WaterFlow sensor");
+        #endif
     }
 
 }

@@ -1,7 +1,7 @@
 #ifndef PHOTORES_HPP
 #define PHOTORES_HPP
 
-#define PHOTORES_DEBUG 2
+//#define PHOTORES_DEBUG 2
 
 #include "Arduino.h"
 

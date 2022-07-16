@@ -1,7 +1,7 @@
 #ifndef WTRFLOW_HPP
 #define WTRFLOW_HPP
 
-#define WTRFLOW_DEBUG 5
+//#define WTRFLOW_DEBUG 5
 
 #include "Arduino.h"
 

@@ -8,7 +8,7 @@
 #include "WtrFlow\WtrFlow.hpp"
 
 
-#define SENSORS_DEBUG 1
+//#define SENSORS_DEBUG 1
 
 void SensorsInit(void);
 void Sens2s(void);
