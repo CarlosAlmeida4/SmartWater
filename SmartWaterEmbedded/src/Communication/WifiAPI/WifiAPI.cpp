@@ -48,6 +48,14 @@ boolean WifiAPI_c::ChooseNetworks(String * ACorrect_ssid, uint8_t * objectId)
 
         for(int i = 0; i < SSID_LIST_SIZE; i++)
         {
+            #ifdef WIFIAPI_DEBUG
+            Serial.print("Iteration: ");
+            Serial.println(i);
+            Serial.print("Found Network: ");
+            Serial.println(WiFi.SSID(thisNet));
+            Serial.print("Comparision Network: ");
+            Serial.println(SsidList[i]);
+            #endif
             if(strcmp(WiFi.SSID(thisNet),SsidList[i]) == 0)
             {
                 Correct_ssid = WiFi.SSID(thisNet);
@@ -89,10 +97,7 @@ void WifiAPI_c::InitConnection()
             Serial.println(SsidPassWord[SsidObjectId]);
             retryCounter++;
         }
-        //if(retryCounter >= RETRY_COUNTER)
-        //{
-        //    
-        //}
+
     }
     else
     {
@@ -109,11 +114,22 @@ void WifiAPI_c::InitConnection()
             }
         }
     }
-    // start the web server on port 80
-    //server.begin();
+
+    server.begin();
+
+    // Setup the MDNS responder to listen to the configured name.
+    // NOTE: You _must_ call this _after_ connecting to the WiFi network and
+    // being assigned an IP address.
+    if (!mdnsResponder.begin(mdnsName)) {
+      Serial.println("Failed to start MDNS responder!");
+    };
+
+    Serial.print("Server listening at http://");
+    Serial.print(mdnsName);
+    Serial.println(".local/");
 }
 
-boolean WifiAPI_c::RetryConnection()
+boolean WifiAPI_c::SearchWifiNetwork()
 {
     String CurrentSsid;
     uint8_t SsidObjectId = 255;
@@ -146,22 +162,29 @@ void WifiAPI_c::cyclic2s()
 
     switch (WifiAPIStatus)
     {
-    case NOT_CONNECTED: /*Search for a connection or create AP */
-        InitConnection();
-        WifiAPIStatus = CONNECTING;
-        break;
-    case STANDALONE:
-        // Check if a known network can be connected
-        RetryConnection();
-        break;
-    default:
-        break;
+        case NOT_CONNECTED: /*Search for a connection or create AP */
+            InitConnection();
+            WifiAPIStatus = CONNECTING;
+            break;
+        case STANDALONE:
+            // Check if a known network can be connected
+            // TODO check how to search networks when AP is already started
+            //SearchWifiNetwork();
+            mdnsResponder.poll();
+            ClientUpdate();
+            break;
+        case CONNECTED:
+            mdnsResponder.poll();
+            ClientUpdate();
+        default:
+            break;
     }
     //if it has changed update the variable
     status = WiFi.status();
     switch (status)
     {
         case WL_AP_CONNECTED:
+        case WL_AP_LISTENING:
             WifiAPIStatus = STANDALONE;
             break;
         case WL_CONNECTED:
@@ -174,6 +197,45 @@ void WifiAPI_c::cyclic2s()
     }
     
 
+
+}
+
+void WifiAPI_c::ScanNetworks()
+{
+    Serial.println("** Scan Networks **");
+    int8_t numSsid= WiFi.scanNetworks();
+    if (numSsid == -1)
+    {
+      Serial.println("Couldn't get a wifi connection");
+    }
+
+    // print the list of networks seen:
+    Serial.print("number of available networks:");
+    Serial.println(numSsid);
+
+    // print the network number and name for each network found:
+    for (int thisNet = 0; thisNet < numSsid; thisNet++) {
+        Serial.print(thisNet);
+        Serial.print(") ");
+        Serial.print(WiFi.SSID(thisNet));
+        Serial.print("\tSignal: ");
+        Serial.print(WiFi.RSSI(thisNet));
+        Serial.print(" dBm");
+        Serial.print("\tEncryption: ");
+        Serial.flush();
+        
+        for(int i = 0; i < SSID_LIST_SIZE; i++)
+        {
+            if(strcmp(WiFi.SSID(thisNet),SsidList[i]) == 0)
+            {
+                Serial.println("I will try to connect to this network ");
+            }
+        }
+    }
+}
+
+void WifiAPI_c::ClientUpdate()
+{
     WiFiClient client = server.available(); // listen for incoming clients
     if (client)
     {   
@@ -248,40 +310,6 @@ void WifiAPI_c::cyclic2s()
         #ifdef WIFIAPI_DEBUG  
         Serial.println("client disconnected");
         #endif
-    }
-}
-
-void WifiAPI_c::ScanNetworks()
-{
-    Serial.println("** Scan Networks **");
-    int8_t numSsid= WiFi.scanNetworks();
-    if (numSsid == -1)
-    {
-      Serial.println("Couldn't get a wifi connection");
-    }
-
-    // print the list of networks seen:
-    Serial.print("number of available networks:");
-    Serial.println(numSsid);
-
-    // print the network number and name for each network found:
-    for (int thisNet = 0; thisNet < numSsid; thisNet++) {
-        Serial.print(thisNet);
-        Serial.print(") ");
-        Serial.print(WiFi.SSID(thisNet));
-        Serial.print("\tSignal: ");
-        Serial.print(WiFi.RSSI(thisNet));
-        Serial.print(" dBm");
-        Serial.print("\tEncryption: ");
-        Serial.flush();
-        
-        for(int i = 0; i < SSID_LIST_SIZE; i++)
-        {
-            if(strcmp(WiFi.SSID(thisNet),SsidList[i]) == 0)
-            {
-                Serial.println("I will try to connect to this network ");
-            }
-        }
     }
 }
 

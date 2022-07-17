@@ -7,7 +7,9 @@
 #include "Arduino.h"
 #include "Interface/Interface.hpp"
 #include <WiFi101.h>
+#include <WiFiMDNSResponder.h>
 #include <SPI.h>
+
 
 typedef enum
 {
@@ -24,6 +26,8 @@ class WifiAPI_c
     private: /*Variables*/
         int status = WL_IDLE_STATUS;
         boolean standAloneFlag = false;
+        // Create a MDNS responder to listen and respond to MDNS name requests.
+        WiFiMDNSResponder mdnsResponder;
     public: /*Variables*/
         WifiAPIStateMachine_e WifiAPIStatus;
     public: /*Methods*/
@@ -33,7 +37,8 @@ class WifiAPI_c
         boolean ChooseNetworks(String *, uint8_t *);
         void InitConnection();
         void ScanNetworks(); /* Testing purposes */
-        boolean RetryConnection();
+        boolean SearchWifiNetwork();
+        void ClientUpdate();
 #ifdef WIFIAPI_DEBUG
         void printWiFiStatus();
 #endif
