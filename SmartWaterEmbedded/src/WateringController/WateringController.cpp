@@ -1,48 +1,32 @@
 #include "WateringController.hpp"
 #include "DebugFunction.hpp"
+  // NOT_CONNECTED,
+  // CONNECTED,
+  // STANDALONE,
+  // CONNECTING,
+  // ERROR
 
 
 void WateringController_c::cyclic()
 {
     
-    switch (WateringController2Sens_GetLightLevel())
+    switch (WateringControllerStateMachine)
     {
-    case DAWN_DUSK:
-        if(SOIL_DRY == WateringController2Sens_GetSimpleSoilStatus())
+    case INIT:
+        // Check if connected to network
+        if(CONNECTED == WateringController2WifiAPI_GetWifiState())
         {
-            if(WateringController2Sens_GetAmbientHumidity()<=80)
-            {
-                debugPrint(WATERINGCONTROLLER_DEBUG,"Opened valve because Dawn_dusk");
-                WateringController2Actuator_SetValveOpen();
-            }
+            //Get current time
             
         }
         else
         {
-            WateringController2Actuator_SetValveClosed();
-            debugPrint(WATERINGCONTROLLER_DEBUG,"Closed valve because Dawn_dusk and Soil is not dry");
+            //No way to know time
+            //TODO, figure out best way to handle this
         }
         break;
-    case CLOUDY:
-        if(SOIL_DRY == WateringController2Sens_GetSimpleSoilStatus())
-        {
-            if(WateringController2Sens_GetAmbientHumidity()<=80 || WateringController2Sens_GetAmbientTemperature()>=26)
-            {
-                debugPrint(WATERINGCONTROLLER_DEBUG,"Opened valve because Cloudy");
-                WateringController2Actuator_SetValveOpen();
-            }
-            
-        }
-        else
-        {
-            debugPrint(WATERINGCONTROLLER_DEBUG,"Closed valve because Cloudy and Soil is not dry");
-            WateringController2Actuator_SetValveClosed();
-        }
-        break;
+    
     default:
-        debugPrint(WATERINGCONTROLLER_DEBUG,"Closed valve because not Cloudy and not Dawn_dusk and Soil is not dry");
-        WateringController2Actuator_SetValveClosed();
         break;
     }
-    
 }

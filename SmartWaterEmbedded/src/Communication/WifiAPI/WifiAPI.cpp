@@ -155,10 +155,12 @@ boolean WifiAPI_c::SearchWifiNetwork()
 
 void WifiAPI_c::cyclic2s()
 {
+    #ifdef WIFIAPI_DEBUG   
     Serial.print("Current WifiAPI status: ");
     Serial.println(WifiAPIStatus);
     Serial.print("Current Wifi status: ");
     Serial.println(status);
+    #endif
 
     switch (WifiAPIStatus)
     {

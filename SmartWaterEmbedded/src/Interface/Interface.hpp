@@ -6,6 +6,7 @@
 #include "Arduino.h"
 #include "Actuator/Actu.hpp"
 #include "Sens/Sens.hpp"
+#include "Communication/Communication.hpp"
 
 /*             Wifi interfaces                */
 
@@ -20,7 +21,7 @@ float WifiAPI2Sens_GetAmbientHumidity(void);
 float WifiAPI2Sens_GetAmbientTemperature(void);
 
 /*             Wifi interfaces                */
-
+WifiAPIStateMachine_e WateringController2WifiAPI_GetWifiState(void);
 
 /*         Watering Controller                */
 
