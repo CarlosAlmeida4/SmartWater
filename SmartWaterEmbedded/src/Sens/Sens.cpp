@@ -11,19 +11,27 @@ void SensorsInit(void)
 {
     if(PhotoRes.init(A6)!=true)
     {
+        #ifdef SENSORS_DEBUG
         debugPrint(SENSORS_DEBUG,"Failed to init Photoresistor");
+        #endif
     }
     if(SoilMoist.init(A5)!=true)
     {
+        #ifdef SENSORS_DEBUG
         debugPrint(SENSORS_DEBUG,"Failed to init Soil moisture sensor");
+        #endif
     }
     if(TemHum.init(2)!=true)
     {
+        #ifdef SENSORS_DEBUG
         debugPrint(SENSORS_DEBUG,"Failed to init DHT11 sensor");
+        #endif
     }
     if(WtrFlow.init(5)!=true)
     {
+        #ifdef SENSORS_DEBUG
         debugPrint(SENSORS_DEBUG,"Failed to init WaterFlow sensor");
+        #endif
     }
 
 }
@@ -50,4 +58,24 @@ void Sens10ms(void)
 
 void Sens1ms(void)
 {
+}
+
+SensorPhotoRes_e SensGetLightLevel(void)
+{
+    return PhotoRes.ActualLightLevel;
+}
+
+SimpleSoilStatus_e SensGetSimpleSoilStatus(void)
+{
+    return SoilMoist.getSimpleSoilStatus();
+}
+
+float SensGetAmbientHumidity(void)
+{
+    return TemHum.getHumidity();
+}
+
+float SensGetAmbientTemperature(void)
+{
+    return TemHum.getTemperature();
 }

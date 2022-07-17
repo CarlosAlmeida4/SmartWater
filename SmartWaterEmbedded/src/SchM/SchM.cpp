@@ -3,6 +3,7 @@
 #include <TaskScheduler.h>
 
 Scheduler runner;
+WateringController_c WateringController;
 
 // Callback methods prototypes
 void Task100MS();
@@ -30,6 +31,7 @@ void Task100MS() {
 void Task1000MS(){
     Sens1s();
     Actu1s();
+    WateringController.cyclic();
     //debugPrint(SCHM_DEBUG,"1000MS task");
 }
 
@@ -46,5 +48,6 @@ void SchM_Init(void)
 }
 void SchM_Main(void)
 {
+    //Communication2s();
     runner.execute();
 }

@@ -11,5 +11,6 @@ void Actu1s(void);
 void Actu100ms(void);
 void Actu10ms(void);
 void Actu1ms(void);
-
+void ActuSetValveOpen(void);
+void ActuSetValveClosed(void);
 #endif
