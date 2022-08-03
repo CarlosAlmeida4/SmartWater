@@ -11,13 +11,13 @@
 #include <SPI.h>
 
 
-typedef enum
+typedef enum 
 {
     NOT_CONNECTED,
     CONNECTED,
     STANDALONE,
     CONNECTING,
-    ERROR
+    ERROR_WIFI
 }WifiAPIStateMachine_e;
 
 

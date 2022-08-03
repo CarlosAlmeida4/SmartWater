@@ -16,7 +16,7 @@ void Communication2s()
     WifiAPI.cyclic2s();
 }
 
-WifiAPIStateMachine_e CommunicationGetWifiState()
+uint8_t CommunicationGetWifiState()
 {
     return WifiAPI.WifiAPIStatus;
 }

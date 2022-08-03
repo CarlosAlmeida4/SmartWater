@@ -36,7 +36,7 @@ float WifiAPI2Sens_GetAmbientTemperature(void)
 
 /*             Wifi interfaces                */
 
-WifiAPIStateMachine_e WateringController2WifiAPI_GetWifiState()
+uint8_t WateringController2WifiAPI_GetWifiState()
 {
     return CommunicationGetWifiState();
 }

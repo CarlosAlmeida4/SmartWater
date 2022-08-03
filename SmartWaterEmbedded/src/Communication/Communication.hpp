@@ -8,6 +8,6 @@
 
 void CommunicationInit();
 void Communication2s();
-WifiAPIStateMachine_e CommunicationGetWifiState();
+uint8_t CommunicationGetWifiState();
 
 #endif 
