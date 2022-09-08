@@ -27,7 +27,7 @@ void WateringController_c::cyclic()
               epoch = WiFi.getTime();
               numberOfTries++;
             }
-            while ((epoch == 0) && (numberOfTries < maxTries));
+            while (((epoch > 0) || (numberOfTries > maxTries)) == false);
             
             if (numberOfTries == maxTries) {
                 Serial.print("NTP unreachable!!");
