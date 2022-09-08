@@ -6,7 +6,25 @@
   // CONNECTING,
   // ERROR
 
+/* Create an rtc object */
+RTCZero rtc;
+unsigned long epoch;
 
+void StartWatering()
+{
+  WateringController2Actuator_SetValveOpen();
+  rtc.setAlarmTime(0,40,10);
+  rtc.enableAlarm(rtc.MATCH_HHMMSS);
+  rtc.attachInterrupt(StartWatering);
+}
+
+void StopWatering()
+{
+  WateringController2Actuator_SetValveClosed();
+  rtc.setAlarmTime(0,0,0);
+  rtc.enableAlarm(rtc.MATCH_HHMMSS);
+  rtc.attachInterrupt(StartWatering);
+}
 
 void WateringController_c::cyclic()
 {
@@ -20,7 +38,6 @@ void WateringController_c::cyclic()
             //initialize RTC
             rtc.begin();
             //Get current time
-            unsigned long epoch;
             uint8 numberOfTries = 0, maxTries = 6;
 
             do {
@@ -38,6 +55,11 @@ void WateringController_c::cyclic()
                 Serial.println(epoch);
                 rtc.setEpoch(epoch);
                 Serial.println();
+                //* Set initial alarm
+                rtc.setAlarmTime(0,20,0);
+                rtc.enableAlarm(rtc.MATCH_HHMMSS);
+                rtc.attachInterrupt(StartWatering);
+                rtc.standbyMode();
                 WateringControllerStateMachine = RUNNING;
             }
             
@@ -52,7 +74,8 @@ void WateringController_c::cyclic()
     case RUNNING:
         printDate();
         printTime();
-        Serial.println();    
+        Serial.println(); 
+        rtc.standbyMode();    
         break;
 
     case ERROR_WATERING:
