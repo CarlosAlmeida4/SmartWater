@@ -34,16 +34,21 @@ class WateringController_c
         const byte day = 26;
         const byte month = 7;
         const byte year = 22;
-        const byte StartSeconds = START_SECONDS;
-        const byte StartMinutes = START_MINUTES;
-        const byte StartHours = START_HOURS;
         byte EndSeconds;
         byte EndMinutes;
         byte EndHours;
     public: /*Variables*/
         WateringControllerStateMachine_e WateringControllerStateMachine = INIT;
+        typedef struct AlarmTime
+        {
+            uint8_t StartHour;
+            uint8_t StartMinute;
+            uint8_t StartSecond;
+            uint8_t duration;
+        }alarmTime;
     public: /*Methods*/
         void cyclic();
+        void setAlarmTime(AlarmTime *);
     private: /*Methods*/
         void print2digits(int);
         void printDate();

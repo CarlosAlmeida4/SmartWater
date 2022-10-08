@@ -127,6 +127,10 @@ void WifiAPI_c::InitConnection()
     Serial.print("Server listening at http://");
     Serial.print(mdnsName);
     Serial.println(".local/");
+    // print your WiFi shield's IP address:
+    IPAddress ip = WiFi.localIP();
+    Serial.print("IP Address: ");
+    Serial.println(ip);
 }
 
 boolean WifiAPI_c::SearchWifiNetwork()
@@ -283,6 +287,10 @@ void WifiAPI_c::ClientUpdate()
                         client.print(WifiAPI2Sens_GetAmbientTemperature());
                         client.println("<br>");
                         client.println();
+                        client.print("<form action=\"/your/endpoint\" method=\"get\">"); 
+                        client.print("<label>StartTime:<input type=\"time\" name=\"StartTime\"></label>");
+                        client.print("<label>TimeInterval:<input type=\"time\" name=\"TimeInterval\"></label>");
+                        client.print("<input type=\"submit\" value=\"Submit\"></form>");
                         // break out of the while loop:
                         break;
                     }

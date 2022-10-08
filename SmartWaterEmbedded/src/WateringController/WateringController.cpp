@@ -26,6 +26,10 @@ void StopWatering()
   rtc.attachInterrupt(StartWatering);
 }
 
+void WateringController_c::setAlarmTime(AlarmTime *)
+{
+
+}
 void WateringController_c::cyclic()
 {
     
@@ -56,10 +60,10 @@ void WateringController_c::cyclic()
                 rtc.setEpoch(epoch);
                 Serial.println();
                 //* Set initial alarm
-                rtc.setAlarmTime(23,47,0);
+                /*rtc.setAlarmTime(23,47,0);
                 rtc.enableAlarm(rtc.MATCH_HHMMSS);
                 rtc.attachInterrupt(StartWatering);
-                rtc.standbyMode();
+                rtc.standbyMode();*/
                 WateringControllerStateMachine = RUNNING;
             }
             
@@ -75,12 +79,7 @@ void WateringController_c::cyclic()
         printDate();
         printTime();
         Serial.println(); 
-        //if(RUNNING == WateringController2WifiAPI_GetWifiState())
-        //{
-        //  epoch = WiFi.getTime();
-        //  rtc.setEpoch(epoch);
-        //}
-        rtc.standbyMode();    
+        //rtc.standbyMode();    
         break;
 
     case ERROR_WATERING:
