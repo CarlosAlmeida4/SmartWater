@@ -287,7 +287,7 @@ void WifiAPI_c::ClientUpdate()
                         client.print(WifiAPI2Sens_GetAmbientTemperature());
                         client.println("<br>");
                         client.println();
-                        client.print("<form action=\"/your/endpoint\" method=\"get\">"); 
+                        client.print("<form action=\"/settime\" method=\"get\">"); 
                         client.print("<label>StartTime:<input type=\"time\" name=\"StartTime\"></label>");
                         client.print("<label>TimeInterval:<input type=\"time\" name=\"TimeInterval\"></label>");
                         client.print("<input type=\"submit\" value=\"Submit\"></form>");
@@ -312,6 +312,41 @@ void WifiAPI_c::ClientUpdate()
                 if (currentLine.endsWith("GET /L"))
                 {
                     WifiAPI2Actuator_SetValveClosed();
+                }
+                if (currentLine.indexOf("settime")!= -1 && currentLine.endsWith("HTTP/1.1"))
+                {   
+                    Serial.print("The current line is: ");
+                    Serial.println(currentLine);
+
+                    int queryStart = currentLine.indexOf("?");
+
+                    if(queryStart != -1)
+                    {
+                        AlarmTime alarmTime;
+                        Serial.print("The query starts at index ");
+                        Serial.println(queryStart);
+                        /* Find start time */
+                        //WateringController
+                        String sHour = currentLine.substring((queryStart + 11), (queryStart + 13));
+                        String sMinute = currentLine.substring((queryStart + 16),(queryStart + 18));
+                        queryStart = currentLine.indexOf("TimeInterval");
+                        String TimeIntervalHour = currentLine.substring((queryStart + 13),(queryStart + 15));
+                        String TimeIntervalMinute = currentLine.substring((queryStart + 18),(queryStart + 20));
+                        Serial.println("The query results are: ");
+                        Serial.print("Hour: ");
+                        Serial.println(sHour);
+                        Serial.print("Minute: ");
+                        Serial.println(sMinute);
+                        Serial.print("Interval Hour: ");
+                        Serial.println(TimeIntervalHour);
+                        Serial.print("Interval Minute: ");
+                        Serial.println(TimeIntervalMinute);
+                    }
+                    else
+                    {
+                        Serial.print("Error in query, the current line is ");
+                        Serial.println(currentLine);
+                    }
                 }
             }
         }

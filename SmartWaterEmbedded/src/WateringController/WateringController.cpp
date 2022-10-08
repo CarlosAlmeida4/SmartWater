@@ -76,9 +76,9 @@ void WateringController_c::cyclic()
         break;
     
     case RUNNING:
-        printDate();
-        printTime();
-        Serial.println(); 
+        //printDate();
+        //printTime();
+        //Serial.println(); 
         //rtc.standbyMode();    
         break;
 
