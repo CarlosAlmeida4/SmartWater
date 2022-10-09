@@ -17,17 +17,15 @@ typedef enum
 {
     INIT,
     RUNNING,
+    SLEEP,
     PRE_WATERING,
     WATERING,
     AFTER_WATERING,
     ERROR_WATERING
 }WateringControllerStateMachine_e;
 
-typedef enum
-{
-    NO_ALARM,
-    SET_ALARM
-}WateringControllerAlarm_e;
+
+WateringControllerAlarm_e WateringAlarmCallback(WateringControllerAlarm_e);
 
 class WateringController_c
 {
@@ -48,11 +46,13 @@ class WateringController_c
         AlarmTime alarmTime;
     public: /*Methods*/
         void cyclic();
-        void setAlarmTime(AlarmTime *);
+        
     private: /*Methods*/
         void print2digits(int);
         void printDate();
         void printTime();
+        void RunningAction();
+        void setAlarmTime();
 
 };
 

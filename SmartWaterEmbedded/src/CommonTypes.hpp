@@ -11,4 +11,11 @@ struct AlarmTime
     uint16_t duration;
 };
 
+typedef enum
+{
+    NO_INIT,
+    NO_ALARM,
+    SET_ALARM
+}WateringControllerAlarm_e;
+
 #endif

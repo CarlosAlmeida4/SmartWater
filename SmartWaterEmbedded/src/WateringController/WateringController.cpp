@@ -10,12 +10,14 @@
 RTCZero rtc;
 unsigned long epoch;
 
+static WateringControllerAlarm_e AlarmState = NO_INIT;
+
 void StartWatering()
 {
   WateringController2Actuator_SetValveOpen();
-  rtc.setAlarmTime(0,40,10);
+  rtc.setAlarmTime(0,30,0);
   rtc.enableAlarm(rtc.MATCH_HHMMSS);
-  rtc.attachInterrupt(StartWatering);
+  rtc.attachInterrupt(StopWatering);
 }
 
 void StopWatering()
@@ -26,9 +28,23 @@ void StopWatering()
   rtc.attachInterrupt(StartWatering);
 }
 
-void WateringController_c::setAlarmTime(AlarmTime *)
+WateringControllerAlarm_e WateringAlarmCallback(WateringControllerAlarm_e changeState)
 {
+  AlarmState = changeState;
+  return AlarmState;
+}
 
+WateringControllerAlarm_e WateringAlarmCallback(void)
+{
+  return AlarmState;
+}
+
+void WateringController_c::setAlarmTime()
+{
+  rtc.setAlarmTime(alarmTime.StartHour,alarmTime.StartMinute,alarmTime.StartSecond);
+  rtc.enableAlarm(rtc.MATCH_HHMMSS);
+  rtc.attachInterrupt(StartWatering);
+  rtc.standbyMode();
 }
 void WateringController_c::cyclic()
 {
@@ -65,6 +81,7 @@ void WateringController_c::cyclic()
                 rtc.attachInterrupt(StartWatering);
                 rtc.standbyMode();*/
                 WateringControllerStateMachine = RUNNING;
+                (void)WateringAlarmCallback(NO_ALARM);
             }
             
         }
@@ -79,7 +96,14 @@ void WateringController_c::cyclic()
         //printDate();
         //printTime();
         //Serial.println(); 
-        //rtc.standbyMode();    
+        //rtc.standbyMode();
+        if(SET_ALARM == WateringAlarmCallback())
+        {
+          AlarmTime receivedAlarm;
+          WateringController2WifiAPI_GetAlarmTime(&receivedAlarm);
+          alarmTime = receivedAlarm;
+        }
+        RunningAction();  
         break;
 
     case ERROR_WATERING:
@@ -88,6 +112,11 @@ void WateringController_c::cyclic()
     default:
         break;
     }
+}
+
+void WateringController_c::RunningAction()
+{
+
 }
 
 void WateringController_c::printTime()
