@@ -11,7 +11,7 @@ RTCZero rtc;
 unsigned long epoch;
 
 static WateringControllerAlarm_e AlarmState = NO_INIT;
-
+void StopWatering();
 void StartWatering()
 {
   WateringController2Actuator_SetValveOpen();
