@@ -330,8 +330,10 @@ void WifiAPI_c::ClientUpdate()
                         String sHour = currentLine.substring((queryStart + 11), (queryStart + 13));
                         String sMinute = currentLine.substring((queryStart + 16),(queryStart + 18));
                         queryStart = currentLine.indexOf("TimeInterval");
+                        /* Find time interval */
                         String TimeIntervalHour = currentLine.substring((queryStart + 13),(queryStart + 15));
                         String TimeIntervalMinute = currentLine.substring((queryStart + 18),(queryStart + 20));
+                        #ifdef WIFIAPI_DEBUG
                         Serial.println("The query results are: ");
                         Serial.print("Hour: ");
                         Serial.println(sHour);
@@ -341,6 +343,21 @@ void WifiAPI_c::ClientUpdate()
                         Serial.println(TimeIntervalHour);
                         Serial.print("Interval Minute: ");
                         Serial.println(TimeIntervalMinute);
+                        #endif
+                        alarmTime.StartHour = (uint8_t)atoi(sHour.c_str());
+                        alarmTime.StartMinute = (uint8_t)atoi(sMinute.c_str());
+                        alarmTime.StartSecond = (uint8_t)0;
+                        alarmTime.duration = (uint16_t)(atoi(TimeIntervalHour.c_str()) * 60) + (uint16_t)atoi(TimeIntervalMinute.c_str());
+                        #ifdef WIFIAPI_DEBUG
+                        Serial.println("The alarmTime struct is: ");
+                        Serial.print("Hour: ");
+                        Serial.println(alarmTime.StartHour);
+                        Serial.print("Minute: ");
+                        Serial.println(alarmTime.StartMinute);
+                        Serial.print("Duration: ");
+                        Serial.println(alarmTime.duration);
+                        #endif
+                        wifiAlarmTime = alarmTime;
                     }
                     else
                     {

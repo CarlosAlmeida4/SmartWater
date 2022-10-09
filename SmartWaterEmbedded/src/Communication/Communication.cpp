@@ -20,3 +20,8 @@ uint8_t CommunicationGetWifiState()
 {
     return WifiAPI.WifiAPIStatus;
 }
+
+AlarmTime CommunicationGetAlarmTime()
+{
+    return WifiAPI.wifiAlarmTime;
+}

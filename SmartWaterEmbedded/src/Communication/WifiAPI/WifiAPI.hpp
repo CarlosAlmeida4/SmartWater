@@ -9,7 +9,7 @@
 #include <WiFi101.h>
 #include <WiFiMDNSResponder.h>
 #include <SPI.h>
-
+#include "CommonTypes.hpp"
 
 typedef enum 
 {
@@ -28,15 +28,9 @@ class WifiAPI_c
         boolean standAloneFlag = false;
         // Create a MDNS responder to listen and respond to MDNS name requests.
         WiFiMDNSResponder mdnsResponder;
-        typedef struct AlarmTime
-        {
-            uint8_t StartHour;
-            uint8_t StartMinute;
-            uint8_t StartSecond;
-            uint8_t duration;
-        };
     public: /*Variables*/
         WifiAPIStateMachine_e WifiAPIStatus;
+        AlarmTime wifiAlarmTime;
     public: /*Methods*/
         void WifiAPIInit();
         void cyclic2s();

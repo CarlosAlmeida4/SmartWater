@@ -42,7 +42,7 @@ void WateringController_c::cyclic()
             //initialize RTC
             rtc.begin();
             //Get current time
-            uint8 numberOfTries = 0, maxTries = 200;
+            uint8 numberOfTries = 0, maxTries = UINT8_MAX;
 
             do {
               epoch = WiFi.getTime();

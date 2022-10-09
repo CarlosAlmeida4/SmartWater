@@ -34,14 +34,17 @@ float WifiAPI2Sens_GetAmbientTemperature(void)
     return SensGetAmbientTemperature();
 }
 
-/*             Wifi interfaces                */
+uint8_t WifiApi2WateringController_SetAlarm(AlarmTime* alarmTime)
+{
+
+}
+
+/*         Watering Controller                */
 
 uint8_t WateringController2WifiAPI_GetWifiState()
 {
     return CommunicationGetWifiState();
 }
-
-/*         Watering Controller                */
 
 void WateringController2Actuator_SetValveOpen()
 {

@@ -11,7 +11,7 @@
 #include "Arduino.h"
 #include "Interface/Interface.hpp"
 #include "RTCZero.h"
-
+#include "CommonTypes.hpp"
 
 typedef enum
 {
@@ -22,6 +22,12 @@ typedef enum
     AFTER_WATERING,
     ERROR_WATERING
 }WateringControllerStateMachine_e;
+
+typedef enum
+{
+    NO_ALARM,
+    SET_ALARM
+}WateringControllerAlarm_e;
 
 class WateringController_c
 {
@@ -39,13 +45,7 @@ class WateringController_c
         byte EndHours;
     public: /*Variables*/
         WateringControllerStateMachine_e WateringControllerStateMachine = INIT;
-        typedef struct AlarmTime
-        {
-            uint8_t StartHour;
-            uint8_t StartMinute;
-            uint8_t StartSecond;
-            uint8_t duration;
-        }alarmTime;
+        AlarmTime alarmTime;
     public: /*Methods*/
         void cyclic();
         void setAlarmTime(AlarmTime *);
