@@ -270,12 +270,12 @@ void WifiAPI_c::ClientUpdate()
                         client.println("Content-type:text/html");
                         client.println();
                         // the content of the HTTP response follows the header:
-                        client.print("Click <a href=\"/H\">here</a> to open the valve<br>");
-                        client.print("Click <a href=\"/L\">here</a> to close the valve<br>");
+                        client.print("Click <a href=\"/H\">here</a> to manually open the valve<br>");
+                        client.print("Click <a href=\"/L\">here</a> to manually close the valve<br>");
                         // The HTTP response ends with another blank line:
                         client.println();
-                        client.print("Light level: ");
-                        client.print(WifiAPI2Sens_GetLightLevel());
+                        //client.print("Light level: ");
+                        //client.print(WifiAPI2Sens_GetLightLevel());
                         client.println("<br>");
                         client.print("Soil Moisture: ");
                         client.print(WifiAPI2Sens_GetSimpleSoilStatus());
@@ -287,9 +287,9 @@ void WifiAPI_c::ClientUpdate()
                         client.print(WifiAPI2Sens_GetAmbientTemperature());
                         client.println("<br>");
                         client.println();
-                        client.print("<form action=\"/settime\" method=\"get\">"); 
-                        client.print("<label>StartTime:<input type=\"time\" name=\"StartTime\"></label>");
-                        client.print("<label>TimeInterval:<input type=\"time\" name=\"TimeInterval\"></label>");
+                        client.print("<form action=\"/settime\" method=\"get\"><br>"); 
+                        client.println("<label>StartTime:<input type=\"time\" name=\"StartTime\"></label><br>");
+                        client.println("<label>TimeInterval:<input type=\"time\" name=\"TimeInterval\"></label><br>");
                         client.print("<input type=\"submit\" value=\"Submit\"></form>");
                         // break out of the while loop:
                         break;
