@@ -315,16 +315,19 @@ void WifiAPI_c::ClientUpdate()
                 }
                 if (currentLine.indexOf("settime")!= -1 && currentLine.endsWith("HTTP/1.1"))
                 {   
+                    #ifdef WIFIAPI_DEBUG
                     Serial.print("The current line is: ");
                     Serial.println(currentLine);
-
+                    #endif
                     int queryStart = currentLine.indexOf("?");
 
                     if(queryStart != -1)
                     {
                         AlarmTime alarmTime;
+                        #ifdef WIFIAPI_DEBUG
                         Serial.print("The query starts at index ");
                         Serial.println(queryStart);
+                        #endif
                         /* Find start time */
                         //WateringController
                         String sHour = currentLine.substring((queryStart + 11), (queryStart + 13));
@@ -358,6 +361,7 @@ void WifiAPI_c::ClientUpdate()
                         Serial.println(alarmTime.duration);
                         #endif
                         wifiAlarmTime = alarmTime;
+                        WifiApi2WateringController_TriggerAlarm();
                     }
                     else
                     {

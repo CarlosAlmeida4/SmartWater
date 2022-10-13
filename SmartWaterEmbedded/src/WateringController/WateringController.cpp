@@ -12,10 +12,11 @@ unsigned long epoch;
 
 static WateringControllerAlarm_e AlarmState = NO_INIT;
 void StopWatering();
+
 void StartWatering()
 {
   WateringController2Actuator_SetValveOpen();
-  rtc.setAlarmTime(0,30,0);
+  rtc.setAlarmTime(0,10,0);
   rtc.enableAlarm(rtc.MATCH_HHMMSS);
   rtc.attachInterrupt(StopWatering);
 }
@@ -93,17 +94,7 @@ void WateringController_c::cyclic()
         break;
     
     case RUNNING:
-        //printDate();
-        //printTime();
-        //Serial.println(); 
-        //rtc.standbyMode();
-        if(SET_ALARM == WateringAlarmCallback())
-        {
-          AlarmTime receivedAlarm;
-          WateringController2WifiAPI_GetAlarmTime(&receivedAlarm);
-          alarmTime = receivedAlarm;
-        }
-        RunningAction();  
+        RunningAction();
         break;
 
     case ERROR_WATERING:
@@ -116,6 +107,51 @@ void WateringController_c::cyclic()
 
 void WateringController_c::RunningAction()
 {
+  //printDate();
+  //printTime();
+  //Serial.println(); 
+  //rtc.standbyMode();
+  #ifdef WATERINGCONTROLLER_DEBUG
+  Serial.print(" AlarmCallback status: ");
+  Serial.println(WateringAlarmCallback());
+  #endif 
+  if(SET_ALARM == WateringAlarmCallback())
+  {
+    // Get alarm from wifi
+    AlarmTime receivedAlarm;
+    WateringController2WifiAPI_GetAlarmTime(&receivedAlarm);
+    alarmTime = receivedAlarm;
+    #ifdef WATERINGCONTROLLER_DEBUG
+    Serial.println("The alarmTime struct is: ");
+    Serial.print("Hour: ");
+    Serial.println(alarmTime.StartHour);
+    Serial.print("Minute: ");
+    Serial.println(alarmTime.StartMinute);
+    Serial.print("Duration: ");
+    Serial.println(alarmTime.duration);
+    #endif
+    
+    //check if inside the watering time window
+    if(rtc.getHours() == alarmTime.StartHour)
+    {
+      //TODO
+    }
+    else
+    { 
+      #ifdef WATERINGCONTROLLER_DEBUG
+      Serial.println("The Current time is: ");
+      Serial.print("Hour: ");
+      Serial.println(rtc.getHours());
+      Serial.print("Minute: ");
+      Serial.println(rtc.getMinutes());
+      #endif
+      //Setup routine
+      rtc.setAlarmTime(alarmTime.StartHour,alarmTime.StartMinute,alarmTime.StartSecond);
+      rtc.enableAlarm(rtc.MATCH_HHMMSS);
+      rtc.attachInterrupt(StartWatering);
+      rtc.standbyMode();
+    }
+  }
 
 }
 
