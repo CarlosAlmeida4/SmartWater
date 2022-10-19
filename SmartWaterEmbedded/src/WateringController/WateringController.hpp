@@ -52,7 +52,7 @@ class WateringController_c
         void printDate();
         void printTime();
         void RunningAction();
-        void setAlarmTime();
+        //void setAlarmTime();
 
 };
 

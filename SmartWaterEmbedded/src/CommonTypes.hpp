@@ -15,7 +15,8 @@ typedef enum
 {
     NO_INIT,
     NO_ALARM,
-    SET_ALARM
+    SET_ALARM,
+    ARMED
 }WateringControllerAlarm_e;
 
 #endif
