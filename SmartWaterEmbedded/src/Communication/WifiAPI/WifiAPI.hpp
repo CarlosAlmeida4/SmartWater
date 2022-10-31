@@ -9,15 +9,15 @@
 #include <WiFi101.h>
 #include <WiFiMDNSResponder.h>
 #include <SPI.h>
+#include "CommonTypes.hpp"
 
-
-typedef enum
+typedef enum 
 {
     NOT_CONNECTED,
     CONNECTED,
     STANDALONE,
     CONNECTING,
-    ERROR
+    ERROR_WIFI
 }WifiAPIStateMachine_e;
 
 
@@ -30,6 +30,7 @@ class WifiAPI_c
         WiFiMDNSResponder mdnsResponder;
     public: /*Variables*/
         WifiAPIStateMachine_e WifiAPIStatus;
+        AlarmTime wifiAlarmTime;
     public: /*Methods*/
         void WifiAPIInit();
         void cyclic2s();

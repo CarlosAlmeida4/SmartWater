@@ -127,6 +127,10 @@ void WifiAPI_c::InitConnection()
     Serial.print("Server listening at http://");
     Serial.print(mdnsName);
     Serial.println(".local/");
+    // print your WiFi shield's IP address:
+    IPAddress ip = WiFi.localIP();
+    Serial.print("IP Address: ");
+    Serial.println(ip);
 }
 
 boolean WifiAPI_c::SearchWifiNetwork()
@@ -155,10 +159,12 @@ boolean WifiAPI_c::SearchWifiNetwork()
 
 void WifiAPI_c::cyclic2s()
 {
+    #ifdef WIFIAPI_DEBUG   
     Serial.print("Current WifiAPI status: ");
     Serial.println(WifiAPIStatus);
     Serial.print("Current Wifi status: ");
     Serial.println(status);
+    #endif
 
     switch (WifiAPIStatus)
     {
@@ -264,12 +270,12 @@ void WifiAPI_c::ClientUpdate()
                         client.println("Content-type:text/html");
                         client.println();
                         // the content of the HTTP response follows the header:
-                        client.print("Click <a href=\"/H\">here</a> to open the valve<br>");
-                        client.print("Click <a href=\"/L\">here</a> to close the valve<br>");
+                        client.print("Click <a href=\"/H\">here</a> to manually open the valve<br>");
+                        client.print("Click <a href=\"/L\">here</a> to manually close the valve<br>");
                         // The HTTP response ends with another blank line:
                         client.println();
-                        client.print("Light level: ");
-                        client.print(WifiAPI2Sens_GetLightLevel());
+                        //client.print("Light level: ");
+                        //client.print(WifiAPI2Sens_GetLightLevel());
                         client.println("<br>");
                         client.print("Soil Moisture: ");
                         client.print(WifiAPI2Sens_GetSimpleSoilStatus());
@@ -281,6 +287,10 @@ void WifiAPI_c::ClientUpdate()
                         client.print(WifiAPI2Sens_GetAmbientTemperature());
                         client.println("<br>");
                         client.println();
+                        client.print("<form action=\"/settime\" method=\"get\"><br>"); 
+                        client.println("<label>StartTime:<input type=\"time\" name=\"StartTime\"></label><br>");
+                        client.println("<label>TimeInterval:<input type=\"time\" name=\"TimeInterval\"></label><br>");
+                        client.print("<input type=\"submit\" value=\"Submit\"></form>");
                         // break out of the while loop:
                         break;
                     }
@@ -302,6 +312,62 @@ void WifiAPI_c::ClientUpdate()
                 if (currentLine.endsWith("GET /L"))
                 {
                     WifiAPI2Actuator_SetValveClosed();
+                }
+                if (currentLine.indexOf("settime")!= -1 && currentLine.endsWith("HTTP/1.1"))
+                {   
+                    #ifdef WIFIAPI_DEBUG
+                    Serial.print("The current line is: ");
+                    Serial.println(currentLine);
+                    #endif
+                    int queryStart = currentLine.indexOf("?");
+
+                    if(queryStart != -1)
+                    {
+                        AlarmTime alarmTime;
+                        #ifdef WIFIAPI_DEBUG
+                        Serial.print("The query starts at index ");
+                        Serial.println(queryStart);
+                        #endif
+                        /* Find start time */
+                        //WateringController
+                        String sHour = currentLine.substring((queryStart + 11), (queryStart + 13));
+                        String sMinute = currentLine.substring((queryStart + 16),(queryStart + 18));
+                        queryStart = currentLine.indexOf("TimeInterval");
+                        /* Find time interval */
+                        String TimeIntervalHour = currentLine.substring((queryStart + 13),(queryStart + 15));
+                        String TimeIntervalMinute = currentLine.substring((queryStart + 18),(queryStart + 20));
+                        #ifdef WIFIAPI_DEBUG
+                        Serial.println("The query results are: ");
+                        Serial.print("Hour: ");
+                        Serial.println(sHour);
+                        Serial.print("Minute: ");
+                        Serial.println(sMinute);
+                        Serial.print("Interval Hour: ");
+                        Serial.println(TimeIntervalHour);
+                        Serial.print("Interval Minute: ");
+                        Serial.println(TimeIntervalMinute);
+                        #endif
+                        alarmTime.StartHour = (uint8_t)atoi(sHour.c_str());
+                        alarmTime.StartMinute = (uint8_t)atoi(sMinute.c_str());
+                        alarmTime.StartSecond = (uint8_t)0;
+                        alarmTime.duration = (uint16_t)(atoi(TimeIntervalHour.c_str()) * 60) + (uint16_t)atoi(TimeIntervalMinute.c_str());
+                        #ifdef WIFIAPI_DEBUG
+                        Serial.println("The alarmTime struct is: ");
+                        Serial.print("Hour: ");
+                        Serial.println(alarmTime.StartHour);
+                        Serial.print("Minute: ");
+                        Serial.println(alarmTime.StartMinute);
+                        Serial.print("Duration: ");
+                        Serial.println(alarmTime.duration);
+                        #endif
+                        wifiAlarmTime = alarmTime;
+                        WifiApi2WateringController_TriggerAlarm();
+                    }
+                    else
+                    {
+                        Serial.print("Error in query, the current line is ");
+                        Serial.println(currentLine);
+                    }
                 }
             }
         }

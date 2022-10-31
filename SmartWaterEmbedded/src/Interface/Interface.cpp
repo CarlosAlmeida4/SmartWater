@@ -1,5 +1,6 @@
 #include "Interface.hpp"
 #include "DebugFunction.hpp"
+#include "WateringController/WateringController.hpp"
 
 
 /*             Wifi interfaces                */
@@ -34,9 +35,22 @@ float WifiAPI2Sens_GetAmbientTemperature(void)
     return SensGetAmbientTemperature();
 }
 
-/*             Wifi interfaces                */
+void WifiApi2WateringController_TriggerAlarm()
+{
+    (void)WateringAlarmCallback(SET_ALARM);
+}
 
 /*         Watering Controller                */
+
+void WateringController2WifiAPI_GetAlarmTime(AlarmTime* currentAlarm)
+{
+    *currentAlarm = CommunicationGetAlarmTime();
+}
+
+uint8_t WateringController2WifiAPI_GetWifiState()
+{
+    return CommunicationGetWifiState();
+}
 
 void WateringController2Actuator_SetValveOpen()
 {

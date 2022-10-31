@@ -1,6 +1,6 @@
 #include "Communication.hpp"
 #include "DebugFunction.hpp"
-#include "WifiAPI/WifiAPI.hpp"
+
 
 WifiAPI_c WifiAPI;
 
@@ -14,4 +14,14 @@ void Communication2s()
 {
     //FirebaseWifi.cyclic();
     WifiAPI.cyclic2s();
+}
+
+uint8_t CommunicationGetWifiState()
+{
+    return WifiAPI.WifiAPIStatus;
+}
+
+AlarmTime CommunicationGetAlarmTime()
+{
+    return WifiAPI.wifiAlarmTime;
 }
