@@ -63,7 +63,7 @@ boolean WifiAPI_c::ChooseNetworks(String * ACorrect_ssid, uint8_t * objectId)
                 Serial.println("I will try to connect to this network: ");
                 Serial.println(Correct_ssid);
                 #endif
-                *objectId = (uint8_t)thisNet;
+                *objectId = (uint8_t)i;
                 *ACorrect_ssid = Correct_ssid;
                 found_network = true;
             }
@@ -86,6 +86,12 @@ void WifiAPI_c::InitConnection()
         #ifdef WIFIAPI_DEBUG
         Serial.print("The current Ssid is: ");
         Serial.println(CurrentSsid.c_str());
+        Serial.print("The SsidObjectId is: ");
+        Serial.println(SsidObjectId);
+        Serial.print("SsidList: ");
+        Serial.print(SsidList[SsidObjectId]);
+        Serial.print("   SsidPassWord: ");
+        Serial.println(SsidPassWord[SsidObjectId]);
         #endif
         standAloneFlag = false;
         while(status!= WL_CONNECTED)
